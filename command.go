@@ -1,5 +1,7 @@
 package main
 
+import "strings"
+
 type command struct {
 	name   string
 	index1 int
@@ -22,16 +24,21 @@ func parse(line string) *command {
 
 	for idx < eos {
 		if line[idx] == '=' {
-			return &command{name, index1, index2, line[idx:]}
+			return &command{strings.ToLower(strings.TrimSpace(name)), index1, index2,
+				strings.TrimPrefix(strings.TrimSpace(line[idx:]), "=")}
 		}
 		if line[idx] == ' ' {
 			cin = &index2
 		} else if '0' <= line[idx] && line[idx] <= '9' {
+			if *cin < 0 {
+				*cin = 0
+			}
 			*cin *= 10
 			*cin += int(line[idx] - 0x30)
 		} else {
 			return nil
 		}
+		idx++
 	}
-	return &command{name, index1, index2, ""}
+	return &command{strings.ToLower(strings.TrimSpace(name)), index1, index2, ""}
 }
