@@ -2,6 +2,13 @@ package main
 
 import "strings"
 
+// Special indices
+const (
+	NoIndex int = 0 - iota
+	LastLine
+	CurLine
+)
+
 type command struct {
 	name   string
 	index1 int
@@ -18,8 +25,8 @@ func parse(line string) *command {
 		idx++
 	}
 	idx++
-	index1 := -1
-	index2 := -1
+	index1 := NoIndex
+	index2 := NoIndex
 	cin := &index1
 
 	for idx < eos {
@@ -35,6 +42,12 @@ func parse(line string) *command {
 			}
 			*cin *= 10
 			*cin += int(line[idx] - 0x30)
+		} else if line[idx] == '$' {
+			*cin = LastLine
+		} else if line[idx] == '.' {
+			*cin = CurLine
+		} else if line[idx] == '^' {
+			*cin = 1
 		} else {
 			return nil
 		}

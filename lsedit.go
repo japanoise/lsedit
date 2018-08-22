@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 )
@@ -17,4 +18,20 @@ func main() {
 	}
 	welcome()
 	editor.printCurRow()
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if len(line) > 1 && line[0] == '.' {
+			if line[1] == '.' {
+				editor.insert(line[1:])
+			} else {
+				com := parse(line)
+				if editor.exec(com) {
+					os.Exit(0)
+				}
+			}
+		} else {
+			editor.insert(line)
+		}
+	}
 }
