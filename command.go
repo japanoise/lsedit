@@ -13,7 +13,7 @@ func parse(line string) *command {
 	name := ""
 	idx := 0
 	eos := len(line)
-	for line[idx] != ' ' && idx < eos {
+	for idx < eos && line[idx] != ' ' {
 		name += string(line[idx])
 		idx++
 	}
