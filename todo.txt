@@ -8,7 +8,7 @@
 [ ] .del [st [en]]          Deletes the given lines, or the current one.
 [ ] .copy [st [en]]=de      Copies the given range of lines to the dest.
 [ ] .move [st [en]]=de      Moves the given range of lines to the dest.
-[ ] .find [st]=text         Searches for the given text starting at line start.
+[x] .find [st]=text         Searches for the given text starting at line start.
 [ ] .repl [st [en]]=/old/new  Replaces old text with new in the given lines.
 [ ] .join [st [en]]         Joins together the lines given in the range.
 [ ] .split [st]=text        Splits given line into 2 lines.  Splits after text

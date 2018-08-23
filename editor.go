@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 )
 
 type lseditor struct {
@@ -80,6 +81,16 @@ func (l *lseditor) exec(com *command) bool {
 		err := l.save()
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err.Error())
+		}
+	case ".find":
+		if i1 > l.numrows {
+			i1 = l.numrows
+		}
+		for i, row := range l.rows[i1-1:] {
+			if strings.Contains(row, com.equals) {
+				printLinum(i1 + i)
+				fmt.Println(row)
+			}
 		}
 	case ".h", ".help":
 		helpScreen()
