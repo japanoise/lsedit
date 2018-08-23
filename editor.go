@@ -30,6 +30,21 @@ func (l *lseditor) insert(line string) {
 	}
 }
 
+func (l *lseditor) save() error {
+	file, err := os.Create(l.filename)
+	if err != nil {
+		return err
+	}
+	lines := 0
+	defer file.Close()
+	for _, row := range l.rows {
+		fmt.Fprintln(file, row)
+		lines++
+	}
+	fmt.Printf("< Wrote %d lines to %s >\n", lines, l.filename)
+	return nil
+}
+
 func printLinum(num int) {
 	fmt.Printf("%4d ", num)
 }
@@ -41,7 +56,17 @@ func (l *lseditor) exec(com *command) bool {
 	case ".abort":
 		return true
 	case ".end":
+		err := l.save()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "< %s >\n", err.Error())
+			return false
+		}
 		return true
+	case ".save":
+		err := l.save()
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err.Error())
+		}
 	case ".h", ".help":
 		helpScreen()
 	case ".i", ".insert":
