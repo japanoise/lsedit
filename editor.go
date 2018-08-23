@@ -52,6 +52,20 @@ func printLinum(num int) {
 // Returns true if exit
 func (l *lseditor) exec(com *command) bool {
 	linum := false
+	i1 := com.index1
+	i2 := com.index2
+	if com.index1 == CurLine {
+		i1 = l.currow
+	}
+	if com.index2 == CurLine {
+		i2 = l.currow
+	}
+	if i2 == LastLine || i2 > l.numrows {
+		i2 = l.numrows
+	}
+	if i1 < 1 {
+		i1 = 1
+	}
 	switch com.name {
 	case ".abort":
 		return true
@@ -99,23 +113,7 @@ func (l *lseditor) exec(com *command) bool {
 		} else if com.index1 > l.numrows {
 			return false
 		}
-
-		i1 := com.index1
-		i2 := com.index2
-		if com.index1 == CurLine {
-			i1 = l.currow
-		}
-		if com.index2 == CurLine {
-			i2 = l.currow
-		}
-		if i2 == LastLine || i2 >= l.numrows {
-			for i, row := range l.rows[i1-1:] {
-				if linum {
-					printLinum(i1 + i)
-				}
-				fmt.Println(row)
-			}
-		} else if i2 == NoIndex || i2 <= com.index1 {
+		if i2 == NoIndex || i2 <= com.index1 {
 			if linum {
 				printLinum(i1)
 			}
