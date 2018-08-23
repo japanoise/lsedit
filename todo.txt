@@ -1,0 +1,19 @@
+[x] .save                   Save file
+[x] .end                    Exits the editor with the changes intact.
+[x] .abort                  Aborts the edit.
+[x] .h                      Displays this help screen.
+[x] .i [st]                 Changes the current line for insertion.
+[x] .l [st [en]]            Lists the line(s) given. (if none, lists all.)
+[x] .p [st [en]]            Like .l, except that it prints line numbers too.
+[ ] .del [st [en]]          Deletes the given lines, or the current one.
+[ ] .copy [st [en]]=de      Copies the given range of lines to the dest.
+[ ] .move [st [en]]=de      Moves the given range of lines to the dest.
+[ ] .find [st]=text         Searches for the given text starting at line start.
+[ ] .repl [st [en]]=/old/new  Replaces old text with new in the given lines.
+[ ] .join [st [en]]         Joins together the lines given in the range.
+[ ] .split [st]=text        Splits given line into 2 lines.  Splits after text
+[ ] .left [st [en]]         Aligns all the text to the left side of the screen.
+[ ] .center [st [en]]=cols  Centers the given lines for cols screenwidth.
+[ ] .right [st [en]]=col    Right justifies to column col.
+[ ] .indent [st [en]]=cols  Indents or undents text by cols characters
+[ ] .format [st [en]]=cols  Formats text nicely to cols columns.
