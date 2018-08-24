@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -13,6 +14,8 @@ type lseditor struct {
 	currow   int
 	numrows  int
 }
+
+type region []string
 
 func (l *lseditor) printCurRow() {
 	fmt.Printf("< Insert at line %d >\n", l.currow+1)
@@ -61,6 +64,9 @@ func (l *lseditor) exec(com *command) bool {
 	if com.index2 == CurLine {
 		i2 = l.currow
 	}
+	if i1 == LastLine || i1 > l.numrows {
+		i1 = l.numrows
+	}
 	if i2 == LastLine || i2 > l.numrows {
 		i2 = l.numrows
 	}
@@ -92,6 +98,20 @@ func (l *lseditor) exec(com *command) bool {
 				fmt.Println(row)
 			}
 		}
+	case ".copy":
+		eq, err := strconv.Atoi(com.equals)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "< %s >\n", err)
+			return false
+		}
+
+		reg := l.createRegion(i1-1, i2)
+		if reg == nil {
+			fmt.Fprintln(os.Stderr, "< Invalid region >")
+			return false
+		}
+
+		l.insertRegion(reg, eq)
 	case ".h", ".help":
 		helpScreen()
 	case ".i", ".insert":
@@ -158,4 +178,27 @@ func createEditorFromFile(filename string) (*lseditor, error) {
 	}
 	ret.numrows = ret.currow
 	return ret, nil
+}
+
+func (l *lseditor) createRegion(idx1, idx2 int) region {
+	if idx2 <= idx1 {
+		return nil
+	}
+
+	ret := make(region, idx2-idx1)
+	for i, row := range l.rows[idx1:idx2] {
+		ret[i] = row
+	}
+	return ret
+}
+
+func (l *lseditor) insertRegion(reg region, where int) {
+	reglen := len(reg)
+	lrows := make([]string, l.numrows+reglen)
+	copy(lrows, l.rows)
+	l.rows = lrows
+	copy(l.rows[where+reglen:], l.rows[where:])
+	for i, line := range reg {
+		l.rows[where+i] = line
+	}
 }
