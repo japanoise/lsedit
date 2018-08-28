@@ -98,6 +98,12 @@ func (l *lseditor) exec(com *command) bool {
 				fmt.Println(row)
 			}
 		}
+	case ".d", ".del":
+		if com.index2 == NoIndex {
+			l.delLine(i1 - 1)
+		} else {
+			l.delRegion(i1-1, i2)
+		}
 	case ".copy":
 		eq, err := strconv.Atoi(com.equals)
 		if err != nil {
@@ -201,4 +207,12 @@ func (l *lseditor) insertRegion(reg region, where int) {
 	for i, line := range reg {
 		l.rows[where+i] = line
 	}
+}
+
+func (l *lseditor) delLine(st int) {
+	l.rows = append(l.rows[:st], l.rows[st+1:]...)
+}
+
+func (l *lseditor) delRegion(st, en int) {
+	l.rows = append(l.rows[:st], l.rows[en:]...)
 }

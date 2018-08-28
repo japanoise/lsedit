@@ -5,7 +5,7 @@
 [x] .i [st]                 Changes the current line for insertion.
 [x] .l [st [en]]            Lists the line(s) given. (if none, lists all.)
 [x] .p [st [en]]            Like .l, except that it prints line numbers too.
-[ ] .del [st [en]]          Deletes the given lines, or the current one.
+[x] .del [st [en]]          Deletes the given lines, or the current one.
 [x] .copy [st [en]]=de      Copies the given range of lines to the dest.
 [ ] .move [st [en]]=de      Moves the given range of lines to the dest.
 [x] .find [st]=text         Searches for the given text starting at line start.
